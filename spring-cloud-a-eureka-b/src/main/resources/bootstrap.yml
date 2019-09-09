@@ -1,0 +1,37 @@
+---
+spring:
+  profiles: peer1
+server:
+  port: 1111
+registy:
+  ip: localhost
+  port: 1112
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1112/eureka
+
+---
+
+spring:
+  profiles: peer2
+server:
+  port: 1112
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+registy:
+  ip: localhost
+  port: 1111
+
+---
+
+spring:
+  profiles:
+    active: peer2
+  application:
+    name: eureka-server

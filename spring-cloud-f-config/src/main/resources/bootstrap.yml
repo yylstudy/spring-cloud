@@ -1,0 +1,56 @@
+server:
+  port: 1119
+
+spring:
+  application:
+    name: config-server
+#    bus消息总线中rabbitmq的配置，这里需要集成bus的依赖，这样就能直接调用
+#  http://localhost:1119/bus/refresh 去刷新所有变化的服务
+#  http://localhost:1119/bus/refresh/rabbitmq-bus:** 这个是刷新rabbitmq-bus服务的所有实例
+  rabbitmq:
+    username: root
+    password: root
+    host: 192.168.111.129
+    port: 5672
+  profiles:
+    active: native
+  #    配置spring cloud config 的git仓库地址
+#  这个配置文件地址的格式需要中划线  因为格式是 http://localhost:1119/{application}-{profile}.yml
+#  所以如果配置文件是 config.yml  那么直接访问 http://localhost:1119/config.yml 是不通的
+#  需要访问 http://localhost:1119/bs-search.yml 才能通，但是似乎不影响客户端去获取这个配置
+  cloud:
+    config:
+      server:
+#        git:
+#          uri: https://gitee.com/yyl123/config-server/
+#          username: 1594818954@qq.com
+#          password: yyl18255380339
+#          search-paths: config
+
+#        使用本地文件系统，需要注意的是如果配置成本地目录需要 将spring.profiles.active设置为native
+        native:
+          search-locations: D:/config/config-server/config
+
+#          为spring cloud config所有的客户端配置一些键值对，这些键值对客户端只能通过更高优先级的
+#          方式去修改这些键值对的值（如配置环境变量和系统属性）
+        overrides:
+          user:
+            age: 29
+            username: yyl30
+            sex: man
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+
+#为spring cloud config提供鉴权保护，这里采用了spring-security进行了校验
+security:
+  user:
+    name: yyl
+    password: 123
+management:
+  security:
+    enabled: false

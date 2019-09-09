@@ -1,0 +1,29 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+#获取配置中心的配置文件
+spring:
+  cloud:
+    config:
+      password: 123
+      username: yyl
+      discovery:
+        enabled: true
+        service-id: config-server
+  application:
+    name: rabbitmq-bus
+#    消息总线中rabbitmq的配置
+  rabbitmq:
+    host: 192.168.111.129
+    username: root
+    password: root
+    port: 5672
+server:
+  port: 1124
+#刷新配置时需要关闭management的安全校验
+management:
+  security:
+    enabled: false
+

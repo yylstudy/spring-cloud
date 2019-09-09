@@ -1,0 +1,60 @@
+server:
+  port: 1117
+spring:
+  application:
+    name: feign-client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+#ribbon配置
+ribbon:
+  restclient:
+    enabled: true
+  ConnectTimeout: 250
+  ReadTimeout: 2000
+  MaxAutoRetriesNextServer: 1
+  MaxAutoRetries: 1
+  eager-load:
+    enabled: true
+    clients: client1
+
+#hystrix 超时时间配置 这里需要注意的是 为了只验证feign的hystrix的超时时间，那么需要配置下
+#ribbon的超时时间，因为此时ribbon的超时时间默认为1s，
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+    #    feign客户端的方法名配置，格式为 HelloClient#hello3() 如果包含参数，那么直接写类名即可
+    #    如：  HelloClient#getBody(User)
+    HelloClient#hello3():
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 7500
+    HelloClient#getBody(User):
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5
+
+#启用feign的hystrix
+feign:
+  hystrix:
+    enabled: true
+  compression:
+    request:
+#      开启请求的GZIP压缩
+      enabled: true
+#      指定压缩的请求类型
+      mime-types: application/json
+#      请求压缩的最小值
+      min-request-size: 2048
+    response:
+#      开启相应的GZIP压缩
+      enabled: true
+

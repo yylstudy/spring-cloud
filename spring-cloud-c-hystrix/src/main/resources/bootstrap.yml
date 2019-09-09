@@ -1,0 +1,48 @@
+server:
+  port: 1116
+spring:
+  application:
+    name: hystrix-client
+
+
+#hystrix 全局配置 断路器的超时时间，如果和ribbon一起使用的话，要大于ribbon的超时时间，不然不会触发ribbon的重试
+#此属性对应HystrixCommandProperties的default_executionTimeoutInMilliseconds 默认是1s
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 9000
+      circuitBreaker:
+#        设置滚动时间窗内，断路器的最小请求数，默认是20，在滚动时间窗内（默认是10s）内仅收到
+#        19个请求，即使都失败了，熔断器也不会打开
+        requestVolumeThreshold: 20
+#        断路器打开后的休眠时间窗，休眠时间内，直接服务降级，休眠过后，断路器会处于半开状态
+#        尝试熔断的请求命令，如果成功就关闭断路器
+        sleepWindowInMilliseconds: 5000
+#        断路器打开的错误百分比，默认是50
+        errorThresholdPercentage: 50
+#    基于commandKey的hystrix配置
+    hello4:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1500
+
+#ribbon超时重试机制全局配置
+ribbon:
+  restclient:
+    enabled: true
+  ConnectTimeout: 1000
+  ReadTimeout: 2000
+  OkToRetryOnAllOperations: false
+  MaxAutoRetriesNextServer: 1
+  MaxAutoRetries: 1
+  eager-load:
+    enabled: true
+    clients: client1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka

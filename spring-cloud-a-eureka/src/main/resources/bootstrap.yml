@@ -1,0 +1,29 @@
+server:
+  port: 1111
+spring:
+  application:
+    name: eureka-a
+eureka:
+  client:
+#    不向注册中心注册自己
+    register-with-eureka: false
+#    注册中心的职责是维护服务实例，所以不需要检索服务，如果要消费别的服务，必须为true
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka
+#      client向注册中心获取服务清单的时间间隔
+    registry-fetch-interval-seconds: 30
+
+  instance:
+#    client发送给eureka服务端心跳的频率，默认30s
+    lease-renewal-interval-in-seconds: 30
+#    服务失效时间，表示如果注册中心至上一次收到client心跳的超时时间，
+#    如果超过该时间，注册中心就会移除该client
+    lease-expiration-duration-in-seconds: 90
+#    关闭注册中心的保护机制 保护机制：注册中心会统计在15分钟内心跳的失败是否低于85%
+#    如果低于的话注册中心会保护这些实例，并不会将这些实例剔除，这样就导致客户端会获取已经不存在的实例
+#  所以在本地调试的时候可以关闭
+  server:
+    enable-self-preservation: false
+
+

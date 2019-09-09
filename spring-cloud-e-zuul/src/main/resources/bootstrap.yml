@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      username: yyl
+      password: 123
+      label: master
+server:
+  port: 1118
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+
+
+zuul:
+#  关闭某个过滤器，在自定义异常json信息时需要关闭此过滤器
+  SendErrorFilter:
+    error:
+      disable: true
+
+  #添加zuul地址和服务的映射关系，这里使用了path和serviceId组合的方式
+#  默认情况下，zuul会过滤掉http请求头信息，这样服务下游就无法使用cookie、set-cookie、authorization
+#  三个属性，也就无法使用第三方校验框架 spring security、shiro等，可以全局参数置为空来开启cookie的传递
+#  但是一般不推荐，因为无状态的请求会比这些需要鉴权的请求多，所以可以采用指定服务的方式
+#  sensitive-headers:
+
+#  默认情况下，如果ribbon的连接超时和处理超时小于hystrix的超时时间，那么zuul会自动发起重试
+#  zuul重试默认好像是一个服务一次（待验证）
+#  但是有些情况，我们需要关闭重试，可以全局关闭，也可以指定服务关闭
+#  http://localhost:1118/client1/hello3?ids=2&token=yyl 可以重试
+  retryable: true
+  routes:
+    feign-client:
+      retryable: false
+#      对feign-client服务的请求开启敏感信息传递
+      customSensitiveHeaders: true
+#      或者将指定路由的敏感头设置为空，这个和上面选择其一
+#      sensitive-headers:
+      path: /feign-client/**
+      serviceId: feign-client
+#      更简洁的路由方式，直接使用serviceId，但是这种方式还是很麻烦
+    hystrix-client: /hystrix-client/**
+
+
+#    zuul默认的路由规则就是采用服务名作为路由规则，这样就不需要配置就能访问了
+#      如访问 http://localhost:1118/client1/getUsers?ids=1&token=yyl
+
+#  不自动创建路由规则，这里也不会走zuul的过滤器
+  ignored-services: client2
+
+
+#hystrix超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutinMilliseconds: 6000
+
+#ribbon超时时间配置
+ribbon:
+  restclient:
+    enabled: true
+  ConnectTimeout: 100
+  ReadTimeout: 1400
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 2
+  MaxAutoRetries: 1
+
+
+
+management:
+  security:
+    enabled: false

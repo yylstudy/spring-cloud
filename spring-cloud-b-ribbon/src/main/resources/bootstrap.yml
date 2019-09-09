@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: client2
+#    开启ribbon RestTemplate的重试机制,springcloud C版本以上默认开启
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+#基于具体服务ribbon的超时重试机制，不过好像要建立在ribbon全局的配置上，否则超时不生效
+client1:
+  ribbon:
+    restclient:
+      enables: true
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    OkToRetryOnAllOperations: false
+    MaxAutoRetriesNextServer: 1
+    MaxAutoRetries: 1
+
+#ribbon超时重试机制全局配置
+ribbon:
+  restclient:
+#    启动ribbon的超时设置
+    enabled: true
+#  请求连接的超时时间
+  ConnectTimeout: 1000
+#  请求处理的超时时间，默认是1000
+  ReadTimeout: 2000
+#  对所有操作请求都进行重试,默认为false,设定为false的话，只有get请求会重试
+#  如果是post、put等写请求，并且接口没做幂等，这个最好设置为false，
+#  默认情况下，get请求无论是连接异常还是读取超时、异常都会进行重试，
+#  非get方式请求，只有在连接异常时才会进行重试
+  OkToRetryOnAllOperations: false
+#  切换实例的重试次数，不包括首次调用，这个默认值是1
+#  切换实例后的这个实例的调用次数是 1+MaxAutoRetries
+#  网上说的都是1 实验好像不是的
+  MaxAutoRetriesNextServer: 1
+#  对当前实例的重试次数，不包括首次调用 这个配置需要注意下，如果MaxAutoRetriesNextServer配置为1
+#  那么MaxAutoRetries最多配置为1 不然不会重试别的实例 如果MaxAutoRetriesNextServer配置为2
+#  MaxAutoRetries可以配置为2 也会重试别的实例，这个不知道为什么
+  MaxAutoRetries: 1
+  eager-load:
+#    是否关闭ribbon客户端负载均衡的懒加载，因为是懒加载，所以第一次调用会比较慢，这样可能就会
+#    造成接口超时
+    enabled: true
+    clients: client1
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+server:
+  port: 1115
+

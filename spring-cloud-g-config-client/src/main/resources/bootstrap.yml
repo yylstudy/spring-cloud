@@ -1,0 +1,43 @@
+#对于启用spring cloud config的客户端来说，这里的spring.application.name包含两个意思
+#一个是注册到eureka的应用名称，另一个是指定从config中获取配置文件的 /{application}-{profiles}.yml
+#中的application部分
+#还需要注意的是这些配置文件需要配置在bootstrap.yml中，这样spring cloud config中的配置文件才能
+#正确被加载，另外在spring boot中的配置文件加载顺序中，jar包外部的配置文件优先于
+#jar包内部的配置文件，所以即使jar中也存在config.yml，但是重复的内容不会被覆盖，而是以配置中心的为准
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      label: master
+#      spring cloud config通过spring security校验，所以需要配置上用户名和密码
+      username: yyl
+      password: 123
+#      uri的方式指定注册中心地址，但是这样注册中心非高可用
+#      uri: http://localhost:1119
+
+#      开启采用服务名的方式指定注册中心，这样可以达到spring cloud config的高可用
+      discovery:
+        service-id: config-server
+        enabled: true
+#        启用spring cloud config的快速失败特性，这样可以有效避免当配置中心配置有误时，快速返回失败
+#      但是如果因为网络波动而直接返回失败也不好，所以需要配合重试机制使用，所以感觉这个只是在
+#      微服务启动较慢的情况下使用
+      fail-fast: true
+      retry:
+#        重试次数，默认是6次
+        max-attempts: 3
+#        初始时间间隔，默认为1s
+        initial-interval: 1000
+#          最大时间间隔 默认为2s
+        max-interval: 2000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+#      使用refresh时需要关闭 manegement的安全校验
+management:
+  security:
+    enabled: false

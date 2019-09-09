@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: sleuth-client
+#    sleuth与zipkin集成 采用http方式采集日志
+#  zipkin:
+#    base-url: http://localhost:9443
+  rabbitmq:
+    port: 5672
+    host: 192.168.111.129
+    username: root
+    password: root
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+server:
+  port: 1125
