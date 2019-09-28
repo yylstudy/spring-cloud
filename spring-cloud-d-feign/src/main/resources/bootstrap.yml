@@ -13,7 +13,7 @@ ribbon:
   restclient:
     enabled: true
   ConnectTimeout: 250
-  ReadTimeout: 2000
+  ReadTimeout: 1500
   MaxAutoRetriesNextServer: 1
   MaxAutoRetries: 1
   eager-load:
@@ -31,11 +31,11 @@ hystrix:
             timeoutInMilliseconds: 10000
     #    feign客户端的方法名配置，格式为 HelloClient#hello3() 如果包含参数，那么直接写类名即可
     #    如：  HelloClient#getBody(User)
-    HelloClient#hello3():
+    HelloClient#hello4():
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 7500
+            timeoutInMilliseconds: 5000
     HelloClient#getBody(User):
       execution:
         isolation:

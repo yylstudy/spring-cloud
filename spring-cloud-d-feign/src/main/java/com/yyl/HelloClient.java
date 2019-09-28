@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
         fallbackFactory =HelloClientFallbackFactory.class
 )
 public interface HelloClient {
-    @RequestMapping(value = "/hello3",method = RequestMethod.POST)
+    @RequestMapping(value = "/hello3",method = RequestMethod.GET)
     String hello();
 
-    @RequestMapping(value = "/hello3",method = RequestMethod.POST)
-    String hello3();
+    @RequestMapping(value = "/hello3",method = RequestMethod.GET)
+    String hello4();
 
     /**
      * 地址变量参数绑定方式
      * @param id
      * @return
      */
-    @RequestMapping(value="/getUser",method = RequestMethod.POST)
+    @RequestMapping(value="/getUser",method = RequestMethod.GET)
     String getUser(@RequestParam("id") String id);
 
     /**

@@ -16,7 +16,7 @@ public class HelloClientFallback implements HelloClient{
     }
 
     @Override
-    public String hello3() {
+    public String hello4() {
         return "server is error please wait hello3";
     }
 

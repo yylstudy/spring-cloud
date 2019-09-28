@@ -23,7 +23,7 @@ public class HelloClientFallbackFactory implements FallbackFactory<HelloClient> 
             }
 
             @Override
-            public String hello3() {
+            public String hello4() {
                 log.error("call interface hello hello3",throwable);
                 return "server is error please wait hello3";
             }

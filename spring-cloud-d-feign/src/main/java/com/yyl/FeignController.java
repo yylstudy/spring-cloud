@@ -35,7 +35,7 @@ public class FeignController {
     @RequestMapping("/test3")
     public String test3(){
         long t1 = System.currentTimeMillis();
-        String result = helloClient.hello3();
+        String result = helloClient.hello4();
         log.info("call interface result:{}",result);
         log.info("call interface time:{}",(System.currentTimeMillis()-t1));
         return "success";
