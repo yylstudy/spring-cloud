@@ -1,0 +1,25 @@
+server:
+  port: 1120
+spring:
+  application:
+    name: feign-jaeger
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+
+ribbon:
+  restclient:
+    enabled: true
+  ConnectTimeout: 250
+  ReadTimeout: 15000
+opentracing:
+  jaeger:
+    log-spans: true
+    const-sampler:
+      decision: true
+    #将日志发送到agent
+    udp-sender:
+      host: 192.168.242.131
+      port: 6831
+    enabled: true

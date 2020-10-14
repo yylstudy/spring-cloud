@@ -16,6 +16,7 @@
         <module>spring-cloud-h-bus</module>
         <module>spring-cloud-i-sleuth</module>
         <module>spring-cloud-j-zipkin</module>
+        <module>spring-cloud-k-jaeger</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -43,11 +44,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.51</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.22</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

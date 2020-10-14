@@ -144,7 +144,8 @@ public class HystrixService {
         return "server is error";
     }
 
-    public String helloError2(String name){
+    public String helloError2(String name,Throwable t){
+        log.error("call error",t);
         return "server is error";
     }
 

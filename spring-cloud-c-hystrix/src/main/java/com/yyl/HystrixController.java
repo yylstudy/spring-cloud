@@ -68,7 +68,7 @@ public class HystrixController {
 
 
     /**
-     * 模拟1000次请求，因为所有请求都失败，出发了熔断，所以请求并没有都调用helloHystrix接口
+     * 模拟100次请求，因为所有请求都失败，触发了熔断，所以请求并没有都调用helloHystrix接口
      * 实际上报如下错误，Hystrix circuit short-circuited and is OPEN，表示熔断已开，不再调用远程方法，直接调用
      * fallbackMethod，所以接口耗时很低
      * @param name
